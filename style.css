@@ -1,0 +1,242 @@
+/* CSS Document */
+body{
+	background:url(images/bg.gif) repeat-x 0 0 #F7F7F7; color:#171717;
+	font:normal 13px/20px Georgia, "Times New Roman", Times, serif;
+	margin:0; padding:0;}
+div, h1, h2, h3, h4, h5, h6, form, label, input, span, ul, li, p, a{
+	margin:0; padding:0;}
+ul{
+	list-style:none;}
+.spacer{
+	font-size:0; line-height:0; clear:both;}
+
+
+/* -- top navigation start -- */
+#topNav{
+	width:683px; margin:0 auto; height:37px;}
+#topNav ul{
+	width:540px; margin:0 auto;}
+#topNav ul li{
+	height:37px; float:left;
+	background:url(images/bg.gif) repeat-x 0 0 #292929; color:#C1C1C1;
+	font:bold 12px/37px Arial, Helvetica, sans-serif;}
+#topNav ul li a{
+	padding:0 18px; height:37px; float:left; text-decoration:none; display:block;
+	background:url(images/bg.gif) repeat-x 0 0 #292929; color:#C1C1C1;
+	font:bold 12px/37px Arial, Helvetica, sans-serif;}
+#topNav ul li a:hover{
+	background:url(images/top_btn_h.gif) no-repeat center bottom;}
+#topNav ul li a.hover{
+	padding:0 18px; height:37px; float:left; text-decoration:none; display:block;
+	background:url(images/top_btn_h.gif) no-repeat center bottom; color:#C1C1C1;
+	font:bold 12px/37px Arial, Helvetica, sans-serif;}
+/* -- top navigation start -- */
+
+/* -- body start -- */
+#body{
+	width:683px; margin:0 auto; padding:0 0 60px 0;
+	background:url(images/header_bg.jpg) no-repeat right top #F7F7F7; color:#171717;}
+#body img.logo{
+	border:none; margin:30px 0 0 0;}
+#body h1{
+	
+	font:bold 20px/37px Georgia, "Times New Roman", Times, serif;}
+#body div.bodyText{
+	padding:150px 0 0 0;}
+#body div.bodyText h2{
+	font:bold italic 24px/34px Georgia, "Times New Roman", Times, serif; color:#B10000;}
+#body div.bodyText h2 span{
+	color:#000000; background-color:#F7F7F7;}
+#body div.bodyText h3{
+	font:bold 20px/24px Georgia, "Times New Roman", Times, serif; color:#526D0D;
+	background:url(images/folder_icon.gif) no-repeat 0 5px #F7F7F7; padding:0 2px 0 25px;}
+#body div.bodyText h4{
+	font:normal 20px/24px Georgia, "Times New Roman", Times, serif; color:#000000;
+	background-color:#FFF7DE; padding:0 0 0 10px;}
+#body div.bodyText p{
+	font:normal 13px/20px Georgia, "Times New Roman", Times, serif; color:#171717;
+	padding:10px 0; background-color:#F7F7F7;}
+#body div.bodyText p a{
+	color:#003E6A; background-color:#F7F7F7; text-decoration:underline;}
+#body div.bodyText p a:hover{
+	text-decoration:none;}
+#body div.catagory{
+	padding:25px 0 0 0;}
+.pink{
+	width:182px; padding:7px 15px 50px; float:left;
+	background:url(images/pink_bg.gif) no-repeat 0 0 #F7F7F7; color:#4B2B3E;}
+.pink h3{
+	background:url(images/news_icon.gif) no-repeat 2px 13px; color:#850049;
+	font:bold 20px/38px Georgia, "Times New Roman", Times, serif; padding:0 9px 0 22px;}
+.pink h4{
+	background:url(images/date_bg.gif) no-repeat 0 13px; color:#384B06;
+	width:56px; text-align:center;
+	font:bold 12px/39px Arial, Helvetica, sans-serif;}
+.pink h5{
+	color:#000000; text-transform:uppercase;
+	font:bold 10px/11px Georgia, "Times New Roman", Times, serif;}
+.pink p{
+	color:#4B2B3E; padding:3px 0 10px 0;
+	font:normal 11px/17px Georgia, "Times New Roman", Times, serif;}
+.pink a.more{
+	background:url(images/pink_more_btn.gif) no-repeat 0 0 #FFFFFF; color:#000000;
+	width:46px; height:11px; display:block; float:right;
+	text-decoration:none; text-indent:-2000px;
+	padding:0; line-height:0;}
+.pink a.more:hover{
+	background:url(images/pink_more_btn_h.gif) no-repeat 0 0 #FFFFFF; color:#000000;}
+
+.green{
+	width:182px; padding:7px 15px 50px; float:left; margin:0 23px;
+	background:url(images/green_bg.gif) no-repeat 0 0 #F7F7F7; color:#4B2B3E;}
+.green h3{
+	background:url(images/solution_icon.gif) no-repeat 2px 13px; color:#516D0A;
+	font:bold 20px/38px Georgia, "Times New Roman", Times, serif; padding:0 9px 0 22px;}
+.green h5{
+	color:#000000; text-transform:uppercase;
+	font:bold 10px/11px Georgia, "Times New Roman", Times, serif;}
+.green p{
+	color:#3D5C32; padding:3px 0 27px 0;
+	font:normal 11px/17px Georgia, "Times New Roman", Times, serif;}
+.green p a.line{
+	color:#3D5C32; padding:0;  text-decoration:underline;
+	font:normal 11px/17px Georgia, "Times New Roman", Times, serif;}
+.green p a.line:hover{
+	color:#3D5C32; padding:0;  text-decoration:none;
+	font:normal 11px/17px Georgia, "Times New Roman", Times, serif;}
+.green a.more{
+	background:url(images/green_more_btn.gif) no-repeat 0 0 #FFFFFF; color:#000000;
+	width:46px; height:11px; display:block; float:right;
+	text-decoration:none; text-indent:-2000px;
+	padding:0; line-height:0;}
+.green a.more:hover{
+	background:url(images/green_more_btn_h.gif) no-repeat 0 0 #FFFFFF; color:#000000;}
+
+.blue{
+	width:182px; padding:7px 15px 50px; float:left;
+	background:url(images/blue_bg.gif) no-repeat 0 0 #F7F7F7; color:#4B2B3E;}
+.blue h3{
+	background:url(images/support_icon.gif) no-repeat 2px 11px; color:#364A5B;
+	font:bold 20px/38px Georgia, "Times New Roman", Times, serif; padding:0 9px 0 22px;}
+.blue h5{
+	color:#000000; text-transform:uppercase;
+	font:bold 10px/11px Georgia, "Times New Roman", Times, serif;}
+.blue p{
+	color:#364A5B; padding:3px 0 10px 0;
+	font:normal 11px/17px Georgia, "Times New Roman", Times, serif;}
+.blue a.more{
+	background:url(images/blue_more_btn.gif) no-repeat 0 0 #FFFFFF; color:#000000;
+	width:46px; height:11px; display:block; float:right;
+	text-decoration:none; text-indent:-2000px;
+	padding:0; line-height:0;}
+.blue a.more:hover{
+	background:url(images/blue_more_btn_h.gif) no-repeat 0 0 #FFFFFF; color:#000000;}
+.goal{
+	width:448px; float:left; padding:0 22px 0 0;}
+.goal h2{
+	font:bold italic 24px/34px Georgia, "Times New Roman", Times, serif;
+	color:#B10000; background-color:#F7F7F7;}
+.goal h2 span{
+	color:#000000; background-color:#F7F7F7;}
+.goal p{
+	font:normal 13px/20px Georgia, "Times New Roman", Times, serif; color:#171717;
+	padding:10px 0; background-color:#F7F7F7;}
+.goal p.greenText{
+	font:normal 13px/20px Georgia, "Times New Roman", Times, serif; color:#526D0D;
+	padding:6px 0; background-color:#F7F7F7;}
+.goal ul li{
+	font:normal 13px/20px Georgia, "Times New Roman", Times, serif; color:#171717;
+	padding:2px 2px 2px 23px; margin:0 0 5px 0;
+	background:url(images/bullet_no.gif) no-repeat 2px 5px #FFFBED;}
+	
+	
+form.login{
+	top:0 px;
+	right: 0px;
+	width:188px; height:150px; float:right; padding:10px 12px;
+	background-color:#E7E7E7; color:#033462;}
+form.login h2{
+	background:url(images/login_head_bg.gif) no-repeat 0 0 #E7E7E7; color:#000000;
+	font:bold 17px/30px Georgia, "Times New Roman", Times, serif; padding:0 0 20px 13px;}
+form.login label{
+	background-color:#E7E7E7; color:#B10000; padding:0 0 16px 12px; float:left;
+	font:bold 10px/22px "Trebuchet MS", Arial, Helvetica, sans-serif;}
+form.login input{
+	background-color:#FFFFFF; color:#2D2D2D; margin:0 0 16px 0; padding:2px;
+	width:118px; height:14px; float:right;
+	font:normal 10px/14px "Trebuchet MS", Arial, Helvetica, sans-serif;}
+form.login input.loginBtn{
+	background-color:#FFFFFF; color:#2D2D2D; margin:0; padding:0;
+	float:right; width:46px; height:11px; line-height:0; font-size:0;}
+form.login a{
+	background-color:#E7E7E7; color:#033462; padding:0 0 4px 12px; float:left;
+	font:bold 10px/12px Georgia, "Times New Roman", Times, serif;
+	text-decoration:none; text-transform:uppercase;}
+form.login a:hover{
+	background-color:#E7E7E7; color:#064988;}
+
+.floatLeft{
+	float:left;}
+	
+form.registration {
+	top:0px;
+	right: 0px;
+	width: 600 px;
+	height: 200 px;
+	float: left;
+	padding: 10px 12px;
+	background-color:#E7E7E7; color:#033462;
+}	
+/* -- body end -- */
+
+/* footer start -- */
+#footer{
+	background-color:#292929; color:#FFFFFF;}
+.footer{
+	width:490px; height:115px; margin:0 auto; padding:18px 0 0 0;}
+.footer ul{
+	width:445px; margin:0 auto;}
+.footer ul li{
+	font:bold 12px/20px Arial, Helvetica, sans-serif;
+	color:#FAFAFA; background-color:#292929; float:left;}
+.footer ul li a{
+	font:bold 12px/20px Arial, Helvetica, sans-serif; text-decoration:none;
+	color:#FAFAFA; background-color:#292929; padding:0 8px;}
+.footer ul li a:hover{
+	font:bold 12px/20px Arial, Helvetica, sans-serif; text-decoration:none;
+	color:#FAFAFA; background-color:#484848; padding:0 8px;}
+.footer p{
+	margin:0 auto; width:200px; color:#EDE3C0; background-color:#292929;
+	font:normal 11px/18px "Trebuchet MS", Arial, Helvetica, sans-serif;}
+.footer p.valid{
+	margin:0 auto; width:128px;}
+.footer p.valid a.xhtml{
+	background:url(images/xhtml_btn.gif) no-repeat 0 0 #292929; color:#FFFFFF; margin:5px 0 8px 0px;
+	text-decoration:none; text-indent:-2000px; width:62px; height:13px; display:block; float:left;}
+.footer p.valid a.xhtml:hover{
+	background:url(images/xhtml_btn_h.gif) no-repeat 0 0 #292929; color:#FFFFFF; margin:5px 0 8px 0px;
+	text-decoration:none; text-indent:-2000px; width:62px; height:13px; display:block; float:left;}
+.footer p.valid a.css{
+	background:url(images/css_btn.gif) no-repeat 0 0 #292929; color:#FFFFFF; margin:5px 0 8px 4px;
+	text-decoration:none; text-indent:-2000px; width:62px; height:13px; display:block; float:left;}
+.footer p.valid a.css:hover{
+	background:url(images/css_btn_h.gif) no-repeat 0 0 #292929; color:#FFFFFF; margin:5px 0 8px 4px;
+	text-decoration:none; text-indent:-2000px; width:62px; height:13px; display:block; float:left;}
+.footer p.tworld{
+	margin:0 auto; width:170px; height:17px; padding:0 3px;
+	font:normal 12px/16px Arial, Helvetica, sans-serif; color:#414141;
+	background-color:#FFFFFF; text-align:center;}
+.footer p.tworld a{
+	font:bold 12px/16px Arial, Helvetica, sans-serif; color:#000000;
+	background-color:#FFFFFF; text-align:center; text-decoration:none;}
+.footer p.tworld a:hover{
+	font:bold 12px/16px Arial, Helvetica, sans-serif; color:#404040;
+	background-color:#FFFFFF; text-align:center; text-decoration:none;}
+/* footer end -- */
+
+
+
+
+
+
+

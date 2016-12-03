@@ -1,0 +1,11 @@
+﻿.fb_iframe_widget_lift {
+	max-width: none !important;
+}
+
+.hupso_c > div > a > img {
+  box-sizing: content-box; 
+  vertical-align: baseline;	
+}
+
+.hupso_c > div > a {
+  border-bottom: none;}

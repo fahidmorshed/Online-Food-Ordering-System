@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html id="ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 8) ]><!-->
+<html lang="en-US"><!--<![endif]--><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+
+<title>Creating BETTER auto-increment columns in Oracle | Earl C. Ruby III</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="http://earlruby.org/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="http://earlruby.org/wp-content/themes/bota/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+
+<meta property="og:image" content="https://avatars3.githubusercontent.com/u/1270169?v=3&amp;s=460"><link rel="alternate" type="application/rss+xml" title="Earl C. Ruby III » Feed" href="http://earlruby.org/feed/">
+<link rel="alternate" type="application/rss+xml" title="Earl C. Ruby III » Comments Feed" href="http://earlruby.org/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Earl C. Ruby III » Creating BETTER auto-increment columns in Oracle Comments Feed" href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/feed/">
+		<script src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/widgets.js" id="twitter-wjs"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/earlruby.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.2"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/wp-emoji-release.js"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="hupso_css-css" href="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="style-css" href="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="flexslider-css" href="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/flexslider.css" type="text/css" media="all">
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/jquery.js"></script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/jquery-migrate.js"></script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/keyboard-image-navigation.js"></script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/jquery_002.js"></script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/flexslider-init.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://earlruby.org/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://earlruby.org/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Foxmarks – Firefox Bookmark Synchronization" href="http://earlruby.org/2008/10/foxmarks-firefox-bookmark-synchronization/">
+<link rel="next" title="Renaming a CVS Branch" href="http://earlruby.org/2009/01/renaming-a-cvs-branch/">
+<meta name="generator" content="WordPress 4.2.2">
+<link rel="canonical" href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/">
+<link rel="shortlink" href="http://earlruby.org/?p=36">
+	<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+	<style type="text/css">
+			.site-header img {
+			display: block;
+			margin: 0.5em auto 0;
+		}
+			.site-title a,
+		.site-description {
+			color: #404040 !important;
+		}
+		</style>
+	<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #f2f2f2; }
+</style>
+</head>
+
+<body data-twttr-rendered="true" class="single single-post postid-36 single-format-standard custom-background">
+<div id="wrap">
+<div id="topbar"> 
+	<ul class="social-media">
+					<li><a href="https://twitter.com/earlruby" class="genericon genericon-twitter" target="_blank"></a></li>
+				
+					<li><a href="https://www.facebook.com/earl.ruby" class="genericon genericon-facebook-alt" target="_blank"></a></li>
+				
+				
+					<li><a href="http://www.linkedin.com/in/earlruby" class="genericon genericon-linkedin" target="_blank"></a></li>
+				
+					<li><a href="https://plus.google.com/u/0/+EarlRuby/about/p/pub" class="genericon genericon-googleplus" target="_blank"></a></li>
+				
+				
+				
+				
+			
+		
+		
+					<li><a href="https://github.com/earlruby" class="genericon genericon-github" target="_blank"></a></li>
+				
+
+	</ul><!-- #social-icons--></div>
+<div id="page" class="hfeed site">
+	    <div id="masthead-wrap">
+<header id="masthead" class="site-header" role="banner">
+    
+		<div class="site-introduction">
+			<h1 class="site-title"><a href="http://earlruby.org/" title="Earl C. Ruby III" rel="home">Earl C. Ruby III</a></h1>
+			<p class="site-description">this must be the place</p> 
+		</div>
+
+<nav role="navigation" class="site-navigation main-navigation">
+			<h1 class="assistive-text">Menu</h1>
+			<div class="assistive-text skip-link"><a href="#content" title="Skip to content">Skip to content</a></div>
+
+			<div class="menu"><ul><li><a href="http://earlruby.org/">Home</a></li><li class="page_item page-item-79"><a href="http://earlruby.org/hosting/">Hosting</a></li><li class="page_item page-item-2"><a href="http://earlruby.org/about/">About</a></li></ul></div>
+		</nav><!-- .site-navigation .main-navigation -->
+
+	</header><!-- #masthead .site-header -->
+	</div><!-- #masthead-wrap -->
+    <div class="header-image">
+				<a href="http://earlruby.org/" title="Earl C. Ruby III" rel="home">
+				<img src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/cropped-2014-09-19-12.jpg" alt="" height="150" width="960">
+			</a>
+			</div>
+	<div id="main" class="site-main">
+		<div id="primary" class="content-area">
+			<div id="content" class="site-content" role="main">
+
+			
+
+				
+<article id="post-36" class="post-36 post type-post status-publish format-standard hentry category-oracle tag-auto-increment tag-database tag-oracle tag-sequence tag-trigger">
+	<header class="entry-header">
+		<h1 class="entry-title">Creating BETTER auto-increment columns in Oracle</h1>
+
+		<div class="entry-meta">
+			Posted on <a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/" title="13:51" rel="bookmark"><time class="entry-date" datetime="2009-01-21T13:51:11+00:00" pubdate="">2009-01-21</time></a><span class="byline"> by <span class="author vcard"><a class="url fn n" href="http://earlruby.org/author/earlruby/" title="View all posts by Earl C. Ruby III" rel="author">Earl C. Ruby III</a></span></span>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p>I was explaining to a developer today how Oracle doesn’t support 
+auto-increment columns for IDs and how you have to implement your own. I
+ wanted to point him to a tutorial but I found that most of the 
+tutorials have PL/SQL code with unexplained side effects. So I thought 
+I’d post some Oracle PL/SQL code that behaves just like a MySQL or 
+PostgreSQL auto-increment column, but which also fixes the sequence 
+number when an application provides its own ID number for a record, 
+which is one place where MySQL and PostgreSQL autoincrement columns 
+fail.</p>
+<p><strong>Step 1:</strong> Know the names of your tablespaces. Know 
+which tablespace you want to use for your tables and which tablespace 
+you want to use for your indexes. Don’t assume that Oracle is going to 
+put the table in the right place. To get a list of available 
+tablespaces:</p>
+<pre>select tablespace_name from user_tablespaces;</pre>
+<p><strong>Step 2:</strong> Create your table. In this example the table
+ is built in the tablespace TDATA and the primary key index is built in 
+the tablespace INDX.</p>
+<pre>create table example (
+    id number not null,
+    name varchar2(30),
+    constraint example_pk primary key(id) using index tablespace INDX
+) tablespace TDATA;</pre>
+<p>Note that by declaring the id column “not null” you can’t add a record with an empty ID field, ever.</p>
+<p>Creating the primary key constraint on a separate line allows us to 
+name the constraint, which can be handy when you’re looking through the 
+data dictionary later on trying to figure out which constraint does 
+what.</p>
+<p><strong>Step 3:</strong> Create a sequence. In this case I create an 
+ID sequence that starts at 1 and goes on from there. If you want to 
+start your ID sequence with a different number, or increment by some 
+other amount, change these values.</p>
+<pre>create sequence example_id_seq start with 1 increment by 1;</pre>
+<p><strong>Step 4:</strong> Create a trigger. This is what does the actual work setting the ID number. There are many ways to do this, here are two:</p>
+<p><strong>Method 1:</strong> Use a sequence-generated ID for all IDs.</p>
+<pre>create or replace trigger example_insert
+before insert on example
+for each row
+begin
+    select example_id_seq.nextval into :new.id from dual;
+end;
+/</pre>
+<p>Method 1 will always use a sequence-generated ID no matter what. For example:</p>
+<pre>SQL&gt; insert into example (id, name) values (100, 'Earl');
+1 row created.
+SQL&gt; insert into example (name) values ('Cleopatra');
+1 row created.
+SQL&gt; insert into example (name) values ('Frankenstein');
+1 row created.
+SQL&gt; select * from example;
+        ID NAME
+---------- ------------------------------
+         1 Earl
+         2 Cleopatra
+         3 Frankenstein</pre>
+<p>In this case the trigger-supplied ID 1 overwrote the user-supplied id 100.</p>
+<p><strong>Method 2:</strong> Allow users to supply their own IDs when they want to.</p>
+<pre>create or replace trigger example_insert
+before insert on example
+for each row
+declare
+    max_id number;
+    cur_seq number;
+begin
+    if :new.id is null then
+        -- No ID passed, get one from the sequence
+        select example_id_seq.nextval into :new.id from dual;
+    else
+        -- ID was set via insert, so update the sequence
+        select greatest(nvl(max(id),0), :new.id) into max_id from example;
+        select example_id_seq.nextval into cur_seq from dual;
+        while cur_seq &lt; max_id
+        loop
+            select example_id_seq.nextval into cur_seq from dual;
+        end loop;
+    end if;
+end;
+/</pre>
+<p>Method 2 will use the sequence-generated ID if the insert statement 
+doesn’t supply an ID, which is what MySQL and PostgreSQL do. It also 
+updates the sequence so that the next value of the sequence won’t 
+collide with IDs supplied by an insert statement.</p>
+<p>For example, let’s say I’m using Trigger Method 2 and just loaded the table with a bunch of old data, including old ID numbers.</p>
+<pre>SQL&gt; delete from example;
+3 rows deleted.
+SQL&gt; insert into example (id, name) values (200, 'Cleopatra');
+1 row created.
+SQL&gt; insert into example (id, name) values (300, 'Frankenstein');
+1 row created.
+SQL&gt; insert into example (name) values ('Earl');
+1 row created.
+SQL&gt; select * from example;
+
+        ID NAME
+---------- ------------------------------
+       200 Cleopatra
+       300 Frankenstein
+       301 Earl</pre>
+<p>The last record added gets an ID of 301.</p>
+<p>Hope you find this useful.</p>
+<div style="padding-bottom:20px; padding-top:10px;" class="hupso-share-buttons"><!-- Hupso Share Buttons - http://www.hupso.com/share/ --><a onclick="javascript:pageTracker._trackPageview('/outgoing/www.hupso.com/share/');" class="hupso_toolbar" href="http://www.hupso.com/share/"><img src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/share-small.png" style="border:0px; padding-top:5px; float:left;" alt="Share Button"></a><script type="text/javascript">var hupso_services_t=new Array("Twitter","Facebook","Google Plus","Pinterest","Linkedin","StumbleUpon","Digg","Reddit","Delicious","Sina Weibo","Renren","Email","Print");var hupso_background_t="#EAF4FF";var hupso_border_t="#66CCFF";var hupso_toolbar_size_t="small";var hupso_twitter_via = "earlruby";var hupso_image_folder_url = "";var hupso_twitter_via="earlruby";var hupso_url_t="";var hupso_title_t="Creating BETTER auto-increment columns in Oracle";</script><script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/share_toolbar.js"></script><!-- Hupso Share Buttons --></div>			</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+		This entry was posted in <a href="http://earlruby.org/category/oracle/" rel="category tag">Oracle</a> and tagged <a href="http://earlruby.org/tag/auto-increment/" rel="tag">auto-increment</a>, <a href="http://earlruby.org/tag/database/" rel="tag">database</a>, <a href="http://earlruby.org/tag/oracle/" rel="tag">Oracle</a>, <a href="http://earlruby.org/tag/sequence/" rel="tag">sequence</a>, <a href="http://earlruby.org/tag/trigger/" rel="tag">trigger</a>. Bookmark the <a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/" title="Permalink to Creating BETTER auto-increment columns in Oracle" rel="bookmark">permalink</a>.
+			</footer><!-- .entry-meta -->
+</article><!-- #post-36 -->
+
+					<nav role="navigation" id="nav-below" class="site-navigation post-navigation">
+		<h1 class="assistive-text">Post navigation</h1>
+
+	
+		<div class="nav-previous"><a href="http://earlruby.org/2008/10/foxmarks-firefox-bookmark-synchronization/" rel="prev"><span class="meta-nav">←</span> Foxmarks – Firefox Bookmark Synchronization</a></div>		<div class="nav-next"><a href="http://earlruby.org/2009/01/renaming-a-cvs-branch/" rel="next">Renaming a CVS Branch <span class="meta-nav">→</span></a></div>
+	
+	</nav><!-- #nav-below -->
+	
+				
+
+	<div id="comments" class="comments-area">
+
+	
+			<h2 class="comments-title">
+			63 thoughts on “<span>Creating BETTER auto-increment columns in Oracle</span>”		</h2>
+
+				<nav role="navigation" id="comment-nav-above" class="site-navigation comment-navigation">
+			<h1 class="assistive-text">Comment navigation</h1>
+			<div class="nav-previous"><a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/comment-page-1/#comments">← Older Comments</a></div>
+			<div class="nav-next"></div>
+		</nav><!-- #comment-nav-before .site-navigation .comment-navigation -->
+		
+		<ol class="commentlist">
+				<li class="comment even thread-even depth-1" id="li-comment-42255">
+		<article id="comment-42255" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/61dc3c45c69df368f1a4452b3c4843bb.png" srcset="http://0.gravatar.com/avatar/61dc3c45c69df368f1a4452b3c4843bb?s=80&amp;d=identicon&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40">					<cite class="fn">david</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/comment-page-2/#comment-42255"><time pubdate="" datetime="2014-10-28T07:39:02+00:00">
+					2014-10-28 at 07:39					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>i have two table master details t1 
+master with auto-increment primary key and t2 detail also with 
+auto-increment primay key ,if i record the table t2 detail ,they don’t 
+record his master</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/?replytocom=42255#respond" onclick='return addComment.moveForm( "comment-42255", "42255", "respond", "36" )' aria-label="Reply to david">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-42256">
+		<article id="comment-42256" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/61dc3c45c69df368f1a4452b3c4843bb.png" srcset="http://0.gravatar.com/avatar/61dc3c45c69df368f1a4452b3c4843bb?s=80&amp;d=identicon&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40">					<cite class="fn">david</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/comment-page-2/#comment-42256"><time pubdate="" datetime="2014-10-28T07:39:58+00:00">
+					2014-10-28 at 07:39					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>why ??!! plaese reponse</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/?replytocom=42256#respond" onclick='return addComment.moveForm( "comment-42256", "42256", "respond", "36" )' aria-label="Reply to david">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment even thread-even depth-1" id="li-comment-45416">
+		<article id="comment-45416" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/26c4e07e07979979218d5db369c496cc.jpg" srcset="http://2.gravatar.com/avatar/26c4e07e07979979218d5db369c496cc?s=80&amp;d=identicon&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40">					<cite class="fn">J</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/comment-page-2/#comment-45416"><time pubdate="" datetime="2014-11-04T05:21:26+00:00">
+					2014-11-04 at 05:21					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Thank you for your article.</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/?replytocom=45416#respond" onclick='return addComment.moveForm( "comment-45416", "45416", "respond", "36" )' aria-label="Reply to J">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-53465">
+		<article id="comment-53465" class="comment">
+			<footer>
+				<div class="comment-author vcard">
+					<img alt="" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/c87addca56fe254db09a2b222ebde044.png" srcset="http://0.gravatar.com/avatar/c87addca56fe254db09a2b222ebde044?s=80&amp;d=identicon&amp;r=g 2x" class="avatar avatar-40 photo" height="40" width="40">					<cite class="fn">Amaad</cite> <span class="says">says:</span>				</div><!-- .comment-author .vcard -->
+				
+				<div class="comment-meta commentmetadata">
+					<a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/comment-page-2/#comment-53465"><time pubdate="" datetime="2014-11-18T14:31:14+00:00">
+					2014-11-18 at 14:31					</time></a>
+									</div><!-- .comment-meta .commentmetadata -->
+			</footer>
+
+			<div class="comment-content"><p>Very HelpFul   Thanks Earl :)</p>
+</div>
+
+			<div class="reply">
+				<a class="comment-reply-link" href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/?replytocom=53465#respond" onclick='return addComment.moveForm( "comment-53465", "53465", "respond", "36" )' aria-label="Reply to Amaad">Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+		</ol><!-- .commentlist -->
+
+				<nav role="navigation" id="comment-nav-below" class="site-navigation comment-navigation">
+			<h1 class="assistive-text">Comment navigation</h1>
+			<div class="nav-previous"><a href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/comment-page-1/#comments">← Older Comments</a></div>
+			<div class="nav-next"></div>
+		</nav><!-- #comment-nav-below .site-navigation .comment-navigation -->
+		
+	
+	
+							<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://earlruby.org/2009/01/creating-auto-increment-columns-in-oracle/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://earlruby.org/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+																			<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" size="30" aria-required="true" required="required" type="text"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" size="30" aria-describedby="email-notes" aria-required="true" required="required" type="text"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" size="30" type="text"></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true" required="required"></textarea></p>						<p class="form-allowed-tags" id="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a
+ href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; 
+&lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del 
+datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;s&gt; 
+&lt;strike&gt; &lt;strong&gt; </code></p>
+						<p class="form-submit"><input name="submit" id="submit" class="submit" value="Post Comment" type="submit"> <input name="comment_post_ID" value="36" id="comment_post_ID" type="hidden">
+<input name="comment_parent" id="comment_parent" value="0" type="hidden">
+</p><p style="display: none;"><input id="akismet_comment_nonce" name="akismet_comment_nonce" value="bd8c8736f1" type="hidden"></p><p style="display: none;"></p>					<input id="ak_js" name="ak_js" value="1432577261685" type="hidden"></form>
+							</div><!-- #respond -->
+			
+</div><!-- #comments .comments-area -->
+
+			
+			</div><!-- #content .site-content -->
+		</div><!-- #primary .content-area -->
+
+		<div id="secondary" class="widget-area" role="complementary">
+						<aside id="text-5" class="widget widget_text">			<div class="textwidget"><iframe style="position: static; visibility: visible; width: 120px; height: 20px;" data-twttr-rendered="true" title="Twitter Follow Button" class="twitter-follow-button twitter-follow-button" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/follow_button.htm" allowtransparency="true" scrolling="no" id="twitter-widget-0" frameborder="0"></iframe>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>&nbsp; &nbsp;<a href="http://earlruby.org/feed/"><img src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/rss.png"></a></div>
+		</aside><aside id="search-2" class="widget widget_search">	<form method="get" id="searchform" action="http://earlruby.org/" role="search">
+		<label for="s" class="assistive-text">Search</label>
+		<input class="field" name="s" id="s" placeholder="Search …" type="text">
+		<input class="submit" name="submit" id="searchsubmit" value="Search" type="submit">
+	</form>
+</aside><aside id="linkcat-48" class="widget widget_links"><h1 class="widget-title">Artificial Intelligence</h1>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.i-programmer.info/news/105-artificial-intelligence/7985-a-worms-mind-in-a-lego-body.html">A Worm's Mind in a Lego Body</a></li>
+<li><a href="https://chronicle.com/article/The-Believers/190147">Neural net history</a></li>
+
+	</ul>
+</aside>
+<aside id="linkcat-154" class="widget widget_links"><h1 class="widget-title">Big Data</h1>
+	<ul class="xoxo blogroll">
+<li><a href="https://www.youtube.com/watch?v=J0ZC32JOljc#t=19">Big Data and Genomics</a></li>
+<li><a href="http://www.theplatform.net/2015/04/16/inside-the-ceph-exascale-storage-at-yahoo/">Ceph exascale storage at Yahoo</a></li>
+<li><a href="https://code.facebook.com/posts/360346274145943/introducing-data-center-fabric-the-next-generation-facebook-data-center-network/" title="Introducing data center fabric, the next-generation Facebook data center network">Data Center Network Fabric</a></li>
+
+	</ul>
+</aside>
+<aside id="linkcat-115" class="widget widget_links"><h1 class="widget-title">Business</h1>
+	<ul class="xoxo blogroll">
+<li><a href="http://io9.com/how-neal-stephenson-is-helping-to-make-snow-crashs-meta-1671621178" title="How Neal Stephenson Is Helping To Make Snow Crash’s Metaverse A Reality">Building the Snow Crash Metaverse</a></li>
+<li><a href="http://venturebeat.com/2014/11/16/5-founder-friendly-financing-terms-that-give-power-to-entrepreneurs/">Founder-friendly Financing</a></li>
+<li><a href="http://techcrunch.com/2012/11/04/should-your-startup-go-freemium/">Should Your Startup Go Freemium?</a></li>
+
+	</ul>
+</aside>
+<aside id="linkcat-139" class="widget widget_links"><h1 class="widget-title">DevOps</h1>
+	<ul class="xoxo blogroll">
+<li><a href="http://mnx.io/blog/a-proper-server-naming-scheme/">A Proper Server Naming Scheme</a></li>
+<li><a href="http://riemann.io/" title="Monitoring distributed systems in real-time using web sockets">Riemann.io</a></li>
+<li><a href="https://www.devco.net/archives/2015/03/30/some-thoughts-on-operating-containers.php" title="Effectively implementing Docker containers">Some thoughts on operating containers</a></li>
+<li><a href="http://queue.acm.org/detail.cfm?id=2566628" title="What if all the software layers in a virtual appliance were compiled within the same safe, high-level language framework?">Unikernel Operating Systems</a></li>
+
+	</ul>
+</aside>
+<aside id="linkcat-138" class="widget widget_links"><h1 class="widget-title">Performance</h1>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.iometer.org/" title="File system performance test">IOMeter</a></li>
+<li><a href="http://www.iozone.org/" title="IOzone Filesystem Benchmark tool">IOzone</a></li>
+<li><a href="http://www.snookles.com/slf-blog/2012/01/05/tcp-incast-what-is-it/" title="Dealing with TCP Incast on object storage systems">TCP Incast and object storage</a></li>
+
+	</ul>
+</aside>
+<aside id="linkcat-11" class="widget widget_links"><h1 class="widget-title">Security</h1>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.hermann-uwe.de/blog/howto-disk-encryption-with-dm-crypt-luks-and-debian" title="Really slick way to encrypt external hard drives with dm-crypt and LUKS.">Disk encryption with dm-crypt and LUKS</a></li>
+<li><a href="https://encryptallthethings.net/" title="Encrypt all the things">Encrypt all the things</a></li>
+<li><a href="http://www.technologyreview.com/news/521621/engineers-plan-a-fully-encrypted-internet/" title="IETF engineers are deep into an effort to encrypt all Web traffic, and expect to have a revamped system ready to roll out by the end of next year.">Fully Encrypted Internet</a></li>
+<li><a href="https://www.eff.org/deeplinks/2014/11/certificate-authority-encrypt-entire-web" title="A certificate authority to encrypt all the web">Let's Encrypt</a></li>
+<li><a href="http://lizards.opensuse.org/2009/03/18/encrypted-root-file-system-on-lvm/" title="Encrypt everything but the /boot partition using OpenSUSE">OpenSUSE encrypted LVM</a></li>
+<li><a href="http://xkcd.com/936/" title="Better passwords, easier to remember">Password Strength</a></li>
+
+	</ul>
+</aside>
+<aside id="linkcat-13" class="widget widget_links"><h1 class="widget-title">Telecom</h1>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.fastcompany.com/3001938/phil-zimmermanns-silent-circle-builds-secure-seductive-fortress-around-your-smartphone">Encrypt mobile phone calls and data</a></li>
+
+	</ul>
+</aside>
+<aside id="recent-comments-2" class="widget widget_recent_comments"><h1 class="widget-title">Recent Comments</h1><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="http://earlruby.org/" rel="external nofollow" class="url">Earl C. Ruby III</a></span> on <a href="http://earlruby.org/2015/04/restarting-network-interfaces-in-ansible/comment-page-1/#comment-62833">Restarting network interfaces in Ansible</a></li><li class="recentcomments"><span class="comment-author-link">Antony</span> on <a href="http://earlruby.org/2015/04/restarting-network-interfaces-in-ansible/comment-page-1/#comment-62832">Restarting network interfaces in Ansible</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://earlruby.org/" rel="external nofollow" class="url">Earl C. Ruby III</a></span> on <a href="http://earlruby.org/2015/04/restarting-network-interfaces-in-ansible/comment-page-1/#comment-62819">Restarting network interfaces in Ansible</a></li><li class="recentcomments"><span class="comment-author-link">Mark</span> on <a href="http://earlruby.org/2015/04/restarting-network-interfaces-in-ansible/comment-page-1/#comment-62774">Restarting network interfaces in Ansible</a></li><li class="recentcomments"><span class="comment-author-link">Ben</span> on <a href="http://earlruby.org/2014/05/increase-a-vms-available-memory-with-virsh/comment-page-1/#comment-62313">Increase a VM’s available memory with virsh</a></li><li class="recentcomments"><span class="comment-author-link">Michael</span> on <a href="http://earlruby.org/2010/10/increasing-the-size-of-an-lvm-physical-volume-pv-while-running-multipathd-without-rebooting/comment-page-1/#comment-61978">Increasing the size of an LVM Physical Volume (PV) while running multipathd — without rebooting</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://earlruby.org/" rel="external nofollow" class="url">Earl C. Ruby III</a></span> on <a href="http://earlruby.org/2013/05/creating-differential-backups-with-hard-links-and-rsync/comment-page-1/#comment-61210">Creating differential backups with hard links and rsync</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://earlruby.org/" rel="external nofollow" class="url">Earl C. Ruby III</a></span> on <a href="http://earlruby.org/2013/10/getting-rid-of-the-redirecting-to-systemctl-message-in-opensuse/comment-page-1/#comment-61209">Getting rid of the “redirecting to systemctl” message in OpenSUSE</a></li></ul></aside><aside id="text-6" class="widget widget_text">			<div data-twttr-id="twttr-sandbox-0" class="textwidget"> <iframe title="Twitter Timeline" style="border: medium none; max-width: 100%; min-width: 180px; margin: 0px; padding: 0px; display: inline-block; position: static; visibility: visible; width: 192px;" allowfullscreen="" class="twitter-timeline twitter-timeline-rendered" allowtransparency="true" scrolling="no" id="twitter-widget-1" frameborder="0" height="800"></iframe>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+          </div>
+		</aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h1 class="widget-title">Recent Posts</h1>		<ul>
+					<li>
+				<a href="http://earlruby.org/2015/04/use-web-of-trust-wot-to-thwart-scammy-web-sites/">Use Web of Trust (WOT) to thwart scammy web sites</a>
+						</li>
+					<li>
+				<a href="http://earlruby.org/2015/04/restarting-network-interfaces-in-ansible/">Restarting network interfaces in Ansible</a>
+						</li>
+					<li>
+				<a href="http://earlruby.org/2015/02/peerio-promises-privacy-for-everyone/">Peerio promises privacy for everyone</a>
+						</li>
+					<li>
+				<a href="http://earlruby.org/2015/02/stop-mounting-iso-files-in-linux-with-t-iso9660/">Stop mounting ISO files in Linux with “-t iso9660″</a>
+						</li>
+					<li>
+				<a href="http://earlruby.org/2015/01/click-to-stream-m3u-files-in-ubuntu/">Click to stream .m3u files in Ubuntu</a>
+						</li>
+				</ul>
+		</aside><aside id="rss-3" class="widget widget_rss"><h1 class="widget-title"><a class="rsswidget" href="http://www.herdict.org/web/rss/en"><img style="border:0" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/rss.png" alt="RSS" height="14" width="14"></a> <a class="rsswidget" href="http://www.herdict.org/">Am I Blocked or Not?</a></h1><ul><li><a class="rsswidget" href="http://www.herdict.org/web/explore/indepth?fs=2480">www.nytimes.com was reported inaccessible in China</a></li><li><a class="rsswidget" href="http://www.herdict.org/web/explore/indepth?fs=45044">www.nanzao.com was reported inaccessible in China</a></li><li><a class="rsswidget" href="http://www.herdict.org/web/explore/indepth?fs=29305">zoho.com was reported accessible in China</a></li><li><a class="rsswidget" href="http://www.herdict.org/web/explore/indepth?fs=44611">mice.scmp.com was reported inaccessible in China</a></li><li><a class="rsswidget" href="http://www.herdict.org/web/explore/indepth?fs=45876">nanzaozhinan.com was reported accessible in China</a></li><li><a class="rsswidget" href="http://www.herdict.org/web/explore/indepth?fs=2245">www.facebook.com was reported inaccessible in China</a></li></ul></aside><aside id="text-7" class="widget widget_text">			<div class="textwidget"></div>
+		</aside><aside id="creativecommons-license" class="widget widget_ccLicense"><h1 class="widget-title">EarlRuby.org</h1>			<!--Creative Commons License-->
+				<div style="text-align: center; font-size: xx-small;">
+                                Blog under the 
+                                <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/"> Creative Commons Attribution 3.0 License<br>
+				<img alt="Creative Commons License" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/somerights20.png" border="0"></a>
+				</div>
+			<!--/Creative Commons License-->
+		</aside>		</div><!-- #secondary .widget-area -->
+
+		<div id="tertiary" class="widget-area" role="supplementary">
+						</div><!-- #tertiary .widget-area -->
+	</div><!-- #main .site-main -->
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+    
+    <div class="section group">
+    
+	<div class="col span_1_of_3">
+    <div id="text-3" class="widget widget_text"><h4>RSS Feed</h4>			<div class="textwidget"><a href="http://earlruby.org/feed/"><img src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/rss.png"> Subscribe to the EarlRuby.org RSS Feed</a></div>
+		</div>  
+		</div>
+        
+	<div class="col span_1_of_3">
+	<div id="categories-3" class="widget widget_categories"><h4>Categories</h4><label class="screen-reader-text" for="cat">Categories</label><select name="cat" id="cat" class="postform">
+	<option selected="selected" value="-1">Select Category</option>
+	<option class="level-0" value="54">Apple&nbsp;&nbsp;(3)</option>
+	<option class="level-0" value="154">Big Data&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="155">Configuration Management&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="53">Cool Hacks&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="63">Current Events&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="17">Firefox&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="30">Hardware&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="3">Linux&nbsp;&nbsp;(21)</option>
+	<option class="level-0" value="20">Oracle&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="47">Perl&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="25">Revision Control&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="37">Ruby on Rails&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="175">Security&nbsp;&nbsp;(2)</option>
+	<option class="level-0" value="13">Telecom&nbsp;&nbsp;(1)</option>
+	<option class="level-0" value="78">Tools&nbsp;&nbsp;(2)</option>
+</select>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "cat" );
+	function onCatChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
+			location.href = "http://earlruby.org/?cat=" + dropdown.options[ dropdown.selectedIndex ].value;
+		}
+	}
+	dropdown.onchange = onCatChange;
+})();
+/* ]]> */
+</script>
+
+</div> 
+
+	</div>
+    
+	<div class="col span_1_of_3">
+	<div id="archives-3" class="widget widget_archive"><h4>Archives</h4>		<label class="screen-reader-text" for="archives-dropdown-3">Archives</label>
+		<select id="archives-dropdown-3" name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;">
+			
+			<option selected="selected" value="">Select Month</option>
+				<option value="http://earlruby.org/2015/04/"> April 2015 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2015/02/"> February 2015 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2015/01/"> January 2015 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2014/11/"> November 2014 &nbsp;(3)</option>
+	<option value="http://earlruby.org/2014/05/"> May 2014 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2013/10/"> October 2013 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2013/08/"> August 2013 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2013/05/"> May 2013 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2013/03/"> March 2013 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2012/12/"> December 2012 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2012/09/"> September 2012 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2012/04/"> April 2012 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2011/12/"> December 2011 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2011/11/"> November 2011 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2011/10/"> October 2011 &nbsp;(3)</option>
+	<option value="http://earlruby.org/2011/08/"> August 2011 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2011/05/"> May 2011 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2011/03/"> March 2011 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2010/10/"> October 2010 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2010/08/"> August 2010 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2010/05/"> May 2010 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2010/04/"> April 2010 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2010/02/"> February 2010 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2009/11/"> November 2009 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2009/09/"> September 2009 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2009/07/"> July 2009 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2009/06/"> June 2009 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2009/03/"> March 2009 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2009/02/"> February 2009 &nbsp;(1)</option>
+	<option value="http://earlruby.org/2009/01/"> January 2009 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2008/10/"> October 2008 &nbsp;(2)</option>
+	<option value="http://earlruby.org/2008/08/"> August 2008 &nbsp;(1)</option>
+
+		</select>
+</div> 
+	</div>
+	</div>
+
+		<div class="site-info">
+            <a href="http://www.templateexpress.com/bota-theme/">
+            Bota WordPress Theme</a>
+            Powered By WordPress 		</div><!-- .site-info -->
+	</footer><!-- #colophon .site-footer -->
+     <a style="display: inline;" href="#top" id="smoothup"></a>
+</div><!-- #page .hfeed .site -->
+</div><!-- end of wrapper -->
+
+<!-- tracker added by Ultimate Google Analytics plugin v1.6.0: http://www.oratransplant.nl/uga -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-19322647-1");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/form.js"></script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/small-menu.js"></script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/comment-reply.js"></script>
+<script type="text/javascript" src="Creating%20BETTER%20auto-increment%20columns%20in%20Oracle%20_%20Earl%20C.%20Ruby%20III_files/smoothscroll.js"></script>
+
+
+
+
+
+
+<iframe style="display: none;" allowtransparency="true" scrolling="no" id="rufous-sandbox" frameborder="0"></iframe></body></html>
+<!-- Dynamic page generated in 1.651 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2015-05-25 15:31:25 -->
+<!-- Compression = gzip -->
